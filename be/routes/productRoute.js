@@ -5,6 +5,8 @@ const router = express.Router();
 
 // Define rest api
 router.get('/products', async (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     try {
         const data = await modelProduct.find();
         res.json(data);
@@ -13,6 +15,8 @@ router.get('/products', async (req, res) => {
     }
 });
 router.post('/product', async (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     const data = new modelProduct({
         name: req.body.name,
         price: req.body.price,
@@ -34,6 +38,8 @@ router.post('/product', async (req, res) => {
     }
 });
 router.get('/product/:id', async (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     try {
         const data = await modelProduct.findById(req.params.id);
         res.json(data);
@@ -42,6 +48,8 @@ router.get('/product/:id', async (req, res) => {
     }
 });
 router.put('/product/:id', async (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     try {
         const id = req.params.id;
         const updateData = req.body;
@@ -55,6 +63,8 @@ router.put('/product/:id', async (req, res) => {
     }
 });
 router.delete('/product/:id', async (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     try {
         const id = req.params.id;
         await modelProduct.findByIdAndDelete(id);

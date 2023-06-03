@@ -5,6 +5,8 @@ const router = express.Router();
 
 // Define rest api
 router.get('/users', async (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     try {
         const data = await modelUser.find();
         res.json(data);
@@ -13,6 +15,8 @@ router.get('/users', async (req, res) => {
     }
 });
 router.post('/user', async (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     const data = new modelUser({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -34,6 +38,8 @@ router.post('/user', async (req, res) => {
     }
 });
 router.get('/user/:id', async (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     try {
         const data = await modelUser.findById(req.params.id);
         res.json(data);
@@ -44,6 +50,8 @@ router.get('/user/:id', async (req, res) => {
 
 });
 router.put('/user/:id', async (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     try {
         const id = req.params.id;
         const updateData = req.body;
@@ -57,6 +65,8 @@ router.put('/user/:id', async (req, res) => {
     }
 });
 router.delete('/user/:id', async (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     try {
         const id = req.params.id;
         await modelUser.findByIdAndDelete(id);
