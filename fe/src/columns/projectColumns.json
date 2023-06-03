@@ -1,0 +1,28 @@
+{
+    "line": {
+        "Name": {
+            "title": "Name",
+            "type": "Text",
+            "length": 255,
+            "required": false,
+            "editable": true,
+            "blankable": true
+        },
+        "Type": {
+            "title": "Type",
+            "type": "Text",
+            "length": 255,
+            "required": false,
+            "editable": true,
+            "blankable": true
+        },
+        "PostalCode": {
+            "title": "PostalCode",
+            "type": "Text",
+            "length": 255,
+            "required": false,
+            "editable": true,
+            "blankable": true
+        }
+    }
+}

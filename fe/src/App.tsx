@@ -13,7 +13,7 @@ function App() {
   var testWin : window = 'close'
   useEffect(() => {
     const data = async () => {
-      await fetch('http://localhost:5000/api/users').then((data) => data.json()).then(data => console.log('data', data))
+      await fetch('http://localhost:5000/api/products').then((data) => data.json()).then(data => console.log('data', data))
     }
     data()
   }, [])
