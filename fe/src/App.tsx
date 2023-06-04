@@ -1,28 +1,16 @@
-import { useEffect } from 'react';
 import './App.css';
-interface Person {
-  lastName: string,
-  firstName: string,
-  age?: number
-}
-
-type window = 'open' | 'close'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import {routes} from './router'
+import Routing from './Routing';
 
 function App() {
-  var test : Person = {lastName: 'Cao', firstName: 'Trọng'}
-  var testWin : window = 'close'
-  useEffect(() => {
-    const data = async () => {
-      await fetch('http://localhost:5000/api/products').then((data) => data.json()).then(data => console.log('data', data))
-    }
-    data()
-  }, [])
+  let router = createBrowserRouter(routes)
   return (
-    <div className="App">
-      <header className="App-header">
-          {testWin}
-      </header>
-    </div>
+    <>
+    <Routing>
+        <RouterProvider router={router}/>
+    </Routing>
+    </>
   );
 }
 
