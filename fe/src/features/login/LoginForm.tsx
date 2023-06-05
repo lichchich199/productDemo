@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import "./loginForm.css";
 import * as Constant from "../../untils/constant";
 import { useSelector, useDispatch } from "react-redux";
-import { loginAsync } from "./slices";
+import { loginAsync, setFormValue } from "./slices";
 import { RootState, AppDispatch } from "../../store";
 
 export default function LoginForm() {
@@ -27,8 +27,14 @@ export default function LoginForm() {
 
   const dispatchLoginAsync = (data: any) => {
     console.log(data);
-    // dispatch(loginAsync({data}));
+    dispatch(loginAsync());
   };
+
+  const dispatchSetFormValue = (e : any) => {
+    const { name, value } = e.target
+    dispatch(setFormValue({ name, value }))
+  }
+
   //todo xử lí token authentication để lấy được thông tin login
 
   return (
@@ -95,6 +101,7 @@ export default function LoginForm() {
                         errors.email ? "is-invalid" : ""
                       }`}
                       placeholder="Email"
+                      onChange={dispatchSetFormValue}
                     />
                     <div className="invalid-feedback">
                       {errors?.email?.message?.toString()}

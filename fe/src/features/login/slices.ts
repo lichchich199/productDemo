@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, Draft, PayloadAction } from "@reduxjs/toolkit"
 import { createAsyncThunk } from "../toolkit"
 import { login } from "./api"
 import { RootState } from "../../store"
@@ -18,8 +18,9 @@ interface LoginData {
 // login async function
 export const loginAsync = createAsyncThunk(
     "login/login",
-    async (_, thunkAPI) => {
+    async (_, thunkAPI : any) => {
       const { userName , password } = thunkAPI.getState().login
+      console.log('userName', userName)
       const response = await login({ userName, password })
       return response.data
     }
@@ -41,11 +42,17 @@ export const loginAsync = createAsyncThunk(
     name:  'login',
     initialState,
     reducers: {
+        setFormValue: (state : Draft<typeof initialState>, action: PayloadAction<{ name: keyof typeof initialState; value: any }>) => {
+            const { name, value } = action.payload
+            console.log('name', name);
+            console.log('value',value) 
+            // state[name] = value
+        },
         setStateFromLocalStorage: (state) => {
-            state.userName = localStorage.getItem('userName') || '',
-            state.userId = localStorage.getItem('userId') || '',
-            state.accessToken = localStorage.getItem('accessToken') || '',
-            state.timestamp = localStorage.getItem('timestamp') || '',
+            state.userName = localStorage.getItem('userName') || '';
+            state.userId = localStorage.getItem('userId') || '';
+            state.accessToken = localStorage.getItem('accessToken') || '';
+            state.timestamp = localStorage.getItem('timestamp') || '';
             state.isAdminUser = !!localStorage.getItem('isAdminUser') || false
         },
         resetLoginState: (state) => {
@@ -93,8 +100,9 @@ export const loginAsync = createAsyncThunk(
 
  // export actions
  export const {
+     setFormValue,
     setStateFromLocalStorage,
-    resetLoginState
+    resetLoginState,
  } = globalSlice.actions
 
  export default globalSlice.reducer
