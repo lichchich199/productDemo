@@ -1,9 +1,17 @@
 import { configureStore } from "./features/toolkit";
 import globalReducer from "./features/global/slices";
+import loginReducer from "./features/login/slices";
+
 
 //config store
-export default configureStore({
+const store = configureStore({
     reducer:{
-        global: globalReducer
+        global: globalReducer,
+        login: loginReducer
     }
 })
+
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch;
+
+export default store;

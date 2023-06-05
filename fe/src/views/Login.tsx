@@ -1,5 +1,7 @@
+import LoginForm from "../features/login/LoginForm";
+
 export default function Login() {
   return (
-    <div>Login</div>
-  )
+    <LoginForm/>
+  );
 }

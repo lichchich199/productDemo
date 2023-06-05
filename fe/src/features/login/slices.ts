@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { createAsyncThunk } from "../toolkit"
 import { login } from "./api"
+import { RootState } from "../../store"
 
 export const resetLocalStorage = () => {
     localStorage.removeItem('userName')
@@ -10,12 +11,16 @@ export const resetLocalStorage = () => {
     localStorage.removeItem('isAdminUser')
 }
 
+interface LoginData {
+    username: string;
+    password: string;
+  }
 // login async function
 export const loginAsync = createAsyncThunk(
     "login/login",
-    async (_, thunkAPI : any) => {
-      const { username, password } = thunkAPI.getState().login
-      const response = await login({ username, password })
+    async (_, thunkAPI) => {
+      const { userName , password } = thunkAPI.getState().login
+      const response = await login({ userName, password })
       return response.data
     }
   )
