@@ -1,38 +1,35 @@
-import { createSlice, Draft, PayloadAction } from "@reduxjs/toolkit"
-import { createAsyncThunk } from "../toolkit"
+import { createSlice, createAsyncThunk, Draft, PayloadAction } from "../toolkit"
 import { login } from "./api"
-import { RootState } from "../../store"
 
 export const resetLocalStorage = () => {
-    localStorage.removeItem('userName')
+    localStorage.removeItem('email')
     localStorage.removeItem('userId')
     localStorage.removeItem('accessToken')
     localStorage.removeItem('timestamp')
     localStorage.removeItem('isAdminUser')
 }
 
-interface LoginData {
-    username: string;
-    password: string;
-  }
 // login async function
 export const loginAsync = createAsyncThunk(
     "login/login",
     async (_, thunkAPI : any) => {
-      const { userName , password } = thunkAPI.getState().login
-      console.log('userName', userName)
-      const response = await login({ userName, password })
+      const { email , password } = thunkAPI.getState().login
+      console.log('email', email)
+      console.log('password', password)
+      const response = await login({ email, password })
       return response.data
     }
   )
 
+
 // init global state
  const initialState = {
-    userName: "",
+    email: "",
     password: "",
     userId: "",
     accessToken: "",
     timestamp: "",
+    error:"",
     isAdminUser: false,
     status: false
  }
@@ -42,14 +39,13 @@ export const loginAsync = createAsyncThunk(
     name:  'login',
     initialState,
     reducers: {
-        setFormValue: (state : Draft<typeof initialState>, action: PayloadAction<{ name: keyof typeof initialState; value: any }>) => {
-            const { name, value } = action.payload
-            console.log('name', name);
-            console.log('value',value) 
-            // state[name] = value
+        setFormValue: (state : Draft<typeof initialState>, action: PayloadAction<{ name: keyof typeof initialState; value: typeof initialState[keyof typeof initialState] }>) => {
+            const { name, value } = action.payload;
+            (state[name] as any) = value;
+            state.error = '';
         },
         setStateFromLocalStorage: (state) => {
-            state.userName = localStorage.getItem('userName') || '';
+            state.email = localStorage.getItem('email') || '';
             state.userId = localStorage.getItem('userId') || '';
             state.accessToken = localStorage.getItem('accessToken') || '';
             state.timestamp = localStorage.getItem('timestamp') || '';
@@ -57,7 +53,7 @@ export const loginAsync = createAsyncThunk(
         },
         resetLoginState: (state) => {
             resetLocalStorage()
-            state.userName = ''
+            state.email = ''
             state.userId = ''
             state.accessToken = ''
             state.timestamp = ''
@@ -70,24 +66,27 @@ export const loginAsync = createAsyncThunk(
                 state.status = true
             })
             .addCase(loginAsync.fulfilled, (state, action: any) => {
-                const { accessToken, userInfo, userConfig } = action.payload
-                const { isAdminUser } = userConfig;
-                const { userName, userId} = userInfo
-                let timeStamp = new Date().getTime().toString()
+                const { error, data, message } = action.payload
+                console.log('payload', action.payload)
+                if(error) {
+                    state.error = message
+                } else {
+                    state.error = '';
+                    let timeStamp = new Date().getTime().toString()
+                    //set state
+                    state.email = data.email
+                    state.userId = data._id
+                    state.accessToken = ''
+                    state.timestamp = timeStamp
+                    state.isAdminUser =  false
 
-                //set localstorage
-                localStorage.setItem('userName', userName)
-                localStorage.setItem('userId', userId)
-                localStorage.setItem('accessToken', accessToken)
-                localStorage.setItem('timestamp', timeStamp)
-                localStorage.setItem('isAdminUser', isAdminUser || false)
-                
-                //set state
-                state.userName = userName
-                state.userId = userId
-                state.accessToken = accessToken
-                state.timestamp = timeStamp
-                state.isAdminUser = isAdminUser || false
+                    //set localstorage
+                    localStorage.setItem('email', data.email)
+                    localStorage.setItem('userId', data._id)
+                    localStorage.setItem('accessToken', '')
+                    localStorage.setItem('timestamp', timeStamp)
+                    localStorage.setItem('isAdminUser', 'false')
+                }
                 // set status state
                 state.status = false
             })

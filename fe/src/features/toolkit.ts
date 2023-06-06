@@ -1,4 +1,4 @@
-import { createSlice, configureStore, createAsyncThunk as _createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, configureStore, createAsyncThunk as _createAsyncThunk, Draft, PayloadAction } from "@reduxjs/toolkit";
 import { toggleLoadingStatus } from "./global/slices";
 
 type Props = {
@@ -25,4 +25,5 @@ const createAsyncThunk = (name : Props['name'], callback : Props['callback'], er
     })
 }
 
+export type { Draft, PayloadAction };
 export {createSlice, createAsyncThunk, configureStore};

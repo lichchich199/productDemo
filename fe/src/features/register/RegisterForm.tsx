@@ -1,0 +1,203 @@
+import { ChangeEvent } from "react";
+import { useForm } from "react-hook-form";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import "./registerForm.css";
+import * as Constant from "../../untils/constant";
+import { useDispatch } from "react-redux";
+import { setFormValue } from "../login/slices";
+import { AppDispatch } from "../../store";
+
+type FormFieldName =
+  | "email"
+  | "password"
+  | "userId"
+  | "accessToken"
+  | "timestamp"
+  | "isAdminUser"
+  | "status";
+
+export default function RegisterForm() {
+  const dispatch: AppDispatch = useDispatch();
+  // validate shcema login form
+  const validateSchema = Yup.object().shape({
+    firstName: Yup.string()
+      .required("First Name is required")
+      .length(255, "Max length is 255 character"),
+    lastName: Yup.string()
+      .required('"Last Name is required"')
+      .length(255, "Max length is 255 character"),
+    email: Yup.string()
+      .required(Constant.MESSAGE_VALIDATE_REQUIRED_EMAIL)
+      .email(Constant.MESSAGE_VALIDATE_INVALID_EMAIL),
+    password: Yup.string()
+      .required(Constant.MESSAGE_VALIDATE_REQUIRED_PASSWORD)
+      .min(6, "Password must be at least 6 characters"),
+    confirmPassword: Yup.string()
+      .required(Constant.MESSAGE_VALIDATE_REQUIRED_PASSWORD)
+      .oneOf([Yup.ref("password")], "Password is incorrect"),
+    phone: Yup.string()
+      .required("Phone Number is required")
+      .matches(/^\d{11}$/, "Phone Number is invalid"),
+    city: Yup.string().length(255, "Max length is 255 character"),
+    district: Yup.string().length(255, "Max length is 255 character"),
+    building: Yup.string().length(255, "Max length is 255 character"),
+    agreeTerm: Yup.boolean().oneOf([true], "You must to agree to the terms"),
+  });
+  const formOptions = { resolver: yupResolver(validateSchema) };
+  const { register, handleSubmit, formState } = useForm(formOptions);
+  const { errors } = formState;
+
+  // dispatch action to change value of state
+  const dispatchSetFormValue = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    dispatch(setFormValue({ name: name as FormFieldName, value }));
+  };
+  //todo xử lí token authentication để lấy được thông tin login
+
+  // dispatch login action
+  const dispatchRegisterAsync = (data: any) => {
+    console.log(data);
+  };
+  return (
+    <form onSubmit={handleSubmit(dispatchRegisterAsync)}>
+      <div className="form-outline mb-4">
+        <input
+          type="text"
+          {...register("firstName")}
+          className={`form-control ${errors.firstName ? "is-invalid" : ""}`}
+          placeholder="First name"
+          onChange={dispatchSetFormValue}
+        />
+        <div className="invalid-feedback">
+          {errors?.firstName?.message?.toString()}
+        </div>
+      </div>
+
+      <div className="form-outline mb-4">
+        <input
+          type="text"
+          {...register("lastName")}
+          className={`form-control ${errors.lastName ? "is-invalid" : ""}`}
+          placeholder="Last name"
+          onChange={dispatchSetFormValue}
+        />
+        <div className="invalid-feedback">
+          {errors?.lastName?.message?.toString()}
+        </div>
+      </div>
+
+      <div className="form-outline mb-4">
+        <input
+          type="text"
+          {...register("email")}
+          className={`form-control ${errors.email ? "is-invalid" : ""}`}
+          placeholder="Email"
+          onChange={dispatchSetFormValue}
+        />
+        <div className="invalid-feedback">
+          {errors?.email?.message?.toString()}
+        </div>
+      </div>
+
+      <div className="form-outline mb-4">
+        <input
+          type="password"
+          {...register("password")}
+          className={`form-control ${errors.password ? "is-invalid" : ""}`}
+          placeholder="Password"
+          onChange={dispatchSetFormValue}
+        />
+        <div className="invalid-feedback">
+          {errors?.password?.message?.toString()}
+        </div>
+      </div>
+
+      <div className="form-outline mb-4">
+        <input
+          type="confirmPassword"
+          {...register("confirmPassword")}
+          className={`form-control ${
+            errors.confirmPassword ? "is-invalid" : ""
+          }`}
+          placeholder="Confirm password"
+          onChange={dispatchSetFormValue}
+        />
+        <div className="invalid-feedback">
+          {errors?.confirmPassword?.message?.toString()}
+        </div>
+      </div>
+
+      <div className="form-outline mb-4">
+        <input
+          type="text"
+          {...register("phone")}
+          className={`form-control ${errors.phone ? "is-invalid" : ""}`}
+          placeholder="Phone"
+          onChange={dispatchSetFormValue}
+        />
+        <div className="invalid-feedback">
+          {errors?.phone?.message?.toString()}
+        </div>
+      </div>
+
+      <div className="form-outline mb-4">
+        <input
+          type="text"
+          {...register("city")}
+          className={`form-control ${errors.phone ? "is-invalid" : ""}`}
+          placeholder="City"
+          onChange={dispatchSetFormValue}
+        />
+        <div className="invalid-feedback">
+          {errors?.phone?.message?.toString()}
+        </div>
+      </div>
+
+      <div className="form-outline mb-4">
+        <input
+          type="text"
+          {...register("district")}
+          className={`form-control ${errors.district ? "is-invalid" : ""}`}
+          placeholder="District"
+          onChange={dispatchSetFormValue}
+        />
+        <div className="invalid-feedback">
+          {errors?.district?.message?.toString()}
+        </div>
+      </div>
+
+      <div className="form-outline mb-4">
+        <input
+          type="text"
+          {...register("building")}
+          className={`form-control ${errors.building ? "is-invalid" : ""}`}
+          placeholder="Building"
+          onChange={dispatchSetFormValue}
+        />
+        <div className="invalid-feedback">
+          {errors?.building?.message?.toString()}
+        </div>
+      </div>
+
+      <div className="invalid-feedback">
+        {errors?.agreeTerm?.message?.toString()}
+      </div>
+      <div className="form-check d-flex justify-content-center mb-4">
+        <input
+          className="form-check-input me-2"
+          type="checkbox"
+          {...register("agreeTerm")}
+          onChange={dispatchSetFormValue}
+        />
+        <label className="form-check-label" htmlFor="agreeTerm">
+          I have read and agree to the terms
+        </label>
+      </div>
+
+      <button type="submit" className="btn btn-primary btn-block mb-3">
+        Sign in
+      </button>
+    </form>
+  );
+}

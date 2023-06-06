@@ -1,4 +1,5 @@
 import Express  from "express";
+import cors from 'cors'
 import Mongoose from "mongoose";
 import BodyParser from "body-parser";
 import userRoute from './routes/userRoute.js'
@@ -15,6 +16,7 @@ Mongoose.connect(mongoString).then(() => {
 });
 
 var app = Express();
+app.use(cors());
 app.use(BodyParser.json());
 app.use(BodyParser.urlencoded({ extended: true}))
 
