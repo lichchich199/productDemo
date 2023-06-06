@@ -24,24 +24,44 @@ export default {
         next();
     },
     regiter: async function(req, res) {
-        const data = new modelUser({
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            email: req.body.email,
-            password: req.body.password,
-            phoneNumber: req.body.phoneNumber,
-            address: {
-                city: req.body.address.city,
-                district: req.body.address.district,
-                street: req.body.address.street,
-                building: req.body.address.building,
-            }
-        })
+        console.log('req.body', req.body)
         try {
-            const dataToSave = await data.save();
-            res.status(200).json(dataToSave)
+            const data = new modelUser({
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                email: req.body.email,
+                password: req.body.password,
+                phoneNumber: req.body.phoneNumber,
+                address: {
+                    city: req.body?.city || '',
+                    district: req.body?.district || '',
+                    street: req.body?.street || '',
+                    building: req.body?.building || '',
+                }
+            })
+            // todo mã hóa password
+            const user = await modelUser.find({email: req.body.email});
+            console.log('data user', user)
+            
+            if(user.length === 0) {
+                console.log('data save', data)
+                const dataToSave = await data.save();
+                res.status(200).json({
+                    error: false,
+                    message: '',
+                    data: dataToSave
+                })
+            } else {
+                res.status(200).json({
+                    error: true,
+                    message: 'Email has been registered with a different email address.',
+                    data: null
+                })
+            }
+            
         } catch (error) {
             res.status(400).json({message: error.message})
         }
     }
 }
+

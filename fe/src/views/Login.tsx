@@ -14,6 +14,7 @@ export default function Login() {
     if (emailLocalStorage) {
       navigate(`/product/list`);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [email, emailLocalStorage])
   return (
 

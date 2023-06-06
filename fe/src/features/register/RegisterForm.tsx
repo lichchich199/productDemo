@@ -5,16 +5,18 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import "./registerForm.css";
 import * as Constant from "../../untils/constant";
 import { useDispatch } from "react-redux";
-import { setFormValue } from "../login/slices";
 import { AppDispatch } from "../../store";
+import { registerAsync, setFormValue } from "./slices";
 
 type FormFieldName =
+  | "firstName"
+  | "lastName"
   | "email"
   | "password"
-  | "userId"
-  | "accessToken"
-  | "timestamp"
-  | "isAdminUser"
+  | "phone"
+  | "city"
+  | "building"
+  | "district"
   | "status";
 
 export default function RegisterForm() {
@@ -23,10 +25,10 @@ export default function RegisterForm() {
   const validateSchema = Yup.object().shape({
     firstName: Yup.string()
       .required("First Name is required")
-      .length(255, "Max length is 255 character"),
+      .max(255, "Max length is 255 character"),
     lastName: Yup.string()
       .required('"Last Name is required"')
-      .length(255, "Max length is 255 character"),
+      .max(255, "Max length is 255 character"),
     email: Yup.string()
       .required(Constant.MESSAGE_VALIDATE_REQUIRED_EMAIL)
       .email(Constant.MESSAGE_VALIDATE_INVALID_EMAIL),
@@ -39,9 +41,9 @@ export default function RegisterForm() {
     phone: Yup.string()
       .required("Phone Number is required")
       .matches(/^\d{11}$/, "Phone Number is invalid"),
-    city: Yup.string().length(255, "Max length is 255 character"),
-    district: Yup.string().length(255, "Max length is 255 character"),
-    building: Yup.string().length(255, "Max length is 255 character"),
+    city: Yup.string().max(255, "Max length is 255 character"),
+    district: Yup.string().max(255, "Max length is 255 character"),
+    building: Yup.string().max(255, "Max length is 255 character"),
     agreeTerm: Yup.boolean().oneOf([true], "You must to agree to the terms"),
   });
   const formOptions = { resolver: yupResolver(validateSchema) };
@@ -56,8 +58,8 @@ export default function RegisterForm() {
   //todo xử lí token authentication để lấy được thông tin login
 
   // dispatch login action
-  const dispatchRegisterAsync = (data: any) => {
-    console.log(data);
+  const dispatchRegisterAsync = () => {
+    dispatch(registerAsync());
   };
   return (
     <form onSubmit={handleSubmit(dispatchRegisterAsync)}>
@@ -196,7 +198,7 @@ export default function RegisterForm() {
       </div>
 
       <button type="submit" className="btn btn-primary btn-block mb-3">
-        Sign in
+        Submit
       </button>
     </form>
   );
