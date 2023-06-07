@@ -5,21 +5,25 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import "./registerForm.css";
 import * as Constant from "../../untils/constant";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../store";
+import { AppDispatch, RootState } from "../../store";
 import { registerAsync, setFormValue } from "./slices";
+import { useSelector } from "react-redux";
 
 type FormFieldName =
   | "firstName"
   | "lastName"
   | "email"
   | "password"
-  | "phone"
+  | "phoneNumber"
   | "city"
   | "building"
   | "district"
   | "status";
 
 export default function RegisterForm() {
+    const registerState = useSelector((state: RootState) => state.register);
+    var errorMsg = registerState.error;
+    console.log('stateErr Msg', errorMsg)
   const dispatch: AppDispatch = useDispatch();
   // validate shcema login form
   const validateSchema = Yup.object().shape({
@@ -38,7 +42,7 @@ export default function RegisterForm() {
     confirmPassword: Yup.string()
       .required(Constant.MESSAGE_VALIDATE_REQUIRED_PASSWORD)
       .oneOf([Yup.ref("password")], "Password is incorrect"),
-    phone: Yup.string()
+    phoneNumber: Yup.string()
       .required("Phone Number is required")
       .matches(/^\d{11}$/, "Phone Number is invalid"),
     city: Yup.string().max(255, "Max length is 255 character"),
@@ -63,6 +67,7 @@ export default function RegisterForm() {
   };
   return (
     <form onSubmit={handleSubmit(dispatchRegisterAsync)}>
+        {errorMsg && <div className="invalid-register">{errorMsg}</div>}
       <div className="form-outline mb-4">
         <input
           type="text"
@@ -93,7 +98,7 @@ export default function RegisterForm() {
         <input
           type="text"
           {...register("email")}
-          className={`form-control ${errors.email ? "is-invalid" : ""}`}
+          className={`form-control ${(errors.email || errorMsg) ? "is-invalid" : ""}`}
           placeholder="Email"
           onChange={dispatchSetFormValue}
         />
@@ -133,13 +138,13 @@ export default function RegisterForm() {
       <div className="form-outline mb-4">
         <input
           type="text"
-          {...register("phone")}
-          className={`form-control ${errors.phone ? "is-invalid" : ""}`}
-          placeholder="Phone"
+          {...register("phoneNumber")}
+          className={`form-control ${errors.phoneNumber ? "is-invalid" : ""}`}
+          placeholder="Phone number"
           onChange={dispatchSetFormValue}
         />
         <div className="invalid-feedback">
-          {errors?.phone?.message?.toString()}
+          {errors?.phoneNumber?.message?.toString()}
         </div>
       </div>
 
@@ -147,12 +152,12 @@ export default function RegisterForm() {
         <input
           type="text"
           {...register("city")}
-          className={`form-control ${errors.phone ? "is-invalid" : ""}`}
+          className={`form-control ${errors.city ? "is-invalid" : ""}`}
           placeholder="City"
           onChange={dispatchSetFormValue}
         />
         <div className="invalid-feedback">
-          {errors?.phone?.message?.toString()}
+          {errors?.city?.message?.toString()}
         </div>
       </div>
 

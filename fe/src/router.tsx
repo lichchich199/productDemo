@@ -1,11 +1,11 @@
 import ErrorPage from "./components/organisms/ErrorPage";
 import ListProduct from "./views/ListProduct";
-import Login from "./views/Login";
+import Home from "./views/Home";
 
 const routes = [
     {
         path: '/',
-        element:  <Login />,
+        element:  <Home />,
         errorElement: <ErrorPage/>
     }, 
     {

@@ -20,16 +20,16 @@ export const registerAsync = createAsyncThunk(
     lastName: "",
     email: "",
     password: "",
-    phone: "",
+    phoneNumber: "",
     city: "",
     district: "",
     building:"",
-    error: [],
+    error: '',
     status: false
  }
 
 // create global slice
- export const globalSlice = createSlice({
+ export const registerSlice = createSlice({
     name:  'register',
     initialState,
     reducers: {
@@ -38,7 +38,7 @@ export const registerAsync = createAsyncThunk(
             (state[name] as any) = value;
             console.log('name:', name);
             console.log('value:', value);
-            state.error = [];
+            state.error = '';
         },
     },
     extraReducers: (builder) => {
@@ -47,22 +47,22 @@ export const registerAsync = createAsyncThunk(
                 state.status = true
             })
             .addCase(registerAsync.fulfilled, (state, action: any) => {
-                const { error, data } = action.payload
+                const { error, message, data } = action.payload
                 console.log('payload', action.payload)
                 if(error) {
-                    state.error = error
+                    state.error = message
                 } else {
-                    state.error = [];
+                    state.error = '';
                     //reset state
                     state.firstName = "";
                     state.lastName = "";
                     state.email = "";
                     state.password = "";
-                    state.phone = "";
+                    state.phoneNumber = "";
                     state.city = "";
                     state.district = "";
                     state.building ="";
-                    state.error = [];
+                    state.error = '';
 
                     //set localstorage
                     localStorage.setItem('email', data.email)
@@ -84,6 +84,6 @@ export const registerAsync = createAsyncThunk(
  // export actions
  export const {
      setFormValue,
- } = globalSlice.actions
+ } = registerSlice.actions
 
- export default globalSlice.reducer
+ export default registerSlice.reducer

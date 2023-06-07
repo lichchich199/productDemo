@@ -2,10 +2,6 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const dataSchema = new mongoose.Schema({
-    _id: {
-        type: Schema.Types.ObjectId,
-        auto: true
-    },
     firstName: {
         required: true,
         type: String

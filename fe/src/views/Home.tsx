@@ -8,14 +8,16 @@ import RegisterForm from "../features/register/RegisterForm";
 export default function Login() {
   const [isLoginTab, setIsLoginTab] = useState(true);
   const navigate = useNavigate()
-  const { email } = useSelector((state : RootState) => state.login)
+  const loginState = useSelector((state : RootState) => state.login)
+  const registerState = useSelector((state : RootState) => state.register)
+
   const emailLocalStorage = localStorage.getItem("email")
   useEffect(() => {
     if (emailLocalStorage) {
       navigate(`/product/list`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [email, emailLocalStorage])
+  }, [loginState.email, registerState.email, emailLocalStorage])
   return (
 
 <section className="vh-100">

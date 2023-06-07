@@ -19,7 +19,7 @@ export const loginAsync = createAsyncThunk(
       const response = await login({ email, password })
       return response.data
     }
-  )
+)
 
 
 // init global state
@@ -35,7 +35,7 @@ export const loginAsync = createAsyncThunk(
  }
 
 // create global slice
- export const globalSlice = createSlice({
+ export const loginSlice = createSlice({
     name:  'login',
     initialState,
     reducers: {
@@ -51,7 +51,7 @@ export const loginAsync = createAsyncThunk(
             state.timestamp = localStorage.getItem('timestamp') || '';
             state.isAdminUser = !!localStorage.getItem('isAdminUser') || false
         },
-        resetLoginState: (state) => {
+        logout: (state) => {
             resetLocalStorage()
             state.email = ''
             state.userId = ''
@@ -101,7 +101,7 @@ export const loginAsync = createAsyncThunk(
  export const {
      setFormValue,
     setStateFromLocalStorage,
-    resetLoginState,
- } = globalSlice.actions
+    logout,
+ } = loginSlice.actions
 
- export default globalSlice.reducer
+ export default loginSlice.reducer

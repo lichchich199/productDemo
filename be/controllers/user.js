@@ -24,7 +24,6 @@ export default {
         next();
     },
     regiter: async function(req, res) {
-        console.log('req.body', req.body)
         try {
             const data = new modelUser({
                 firstName: req.body.firstName,
@@ -41,7 +40,6 @@ export default {
             })
             // todo mã hóa password
             const user = await modelUser.find({email: req.body.email});
-            console.log('data user', user)
             
             if(user.length === 0) {
                 console.log('data save', data)
@@ -60,6 +58,7 @@ export default {
             }
             
         } catch (error) {
+            console.log('msg lỗi:', error)
             res.status(400).json({message: error.message})
         }
     }
