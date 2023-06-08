@@ -7,8 +7,13 @@ import { AppDispatch, RootState } from '../../store';
 import { getProductAsync, setFormValue } from './slices';
 
 type FormFieldName = 'name';
+interface ActionsListProps {
+    handleChangStatusList: (value: boolean) => void;
+}
 
-export default function ActionsList() {
+export default function ActionsList({
+    handleChangStatusList,
+}: ActionsListProps) {
     const { searchQuery } = useSelector(
         (state: RootState) => state.listProduct
     );
@@ -56,11 +61,18 @@ export default function ActionsList() {
                 <div className="d-flex" style={{ marginLeft: 'auto' }}>
                     <div
                         style={{ margin: '0 10px', cursor: 'pointer' }}
-                        onClick={() => {}}
+                        onClick={() => {
+                            handleChangStatusList(true);
+                        }}
                     >
                         <FontAwesomeIcon icon={faList as any} />
                     </div>
-                    <div style={{ cursor: 'pointer' }} onClick={() => {}}>
+                    <div
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => {
+                            handleChangStatusList(false);
+                        }}
+                    >
                         <FontAwesomeIcon icon={faTable as any} />
                     </div>
                 </div>

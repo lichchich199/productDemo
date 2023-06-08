@@ -22,16 +22,22 @@ export default function ListProduct() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loginState.email]);
+
+    const handleChangStatusList = (value: boolean) => {
+        setListStatus(value);
+    };
     return (
         <Layout>
             <div className="row" style={{ marginTop: '4%', marginRight: '0' }}>
                 <CategoryList />
                 <div className="col-lg-10">
-                    <ListActions />
+                    <ListActions
+                        handleChangStatusList={handleChangStatusList}
+                    />
                     {listStatus ? (
-                        <ProductInfomationGrid />
-                    ) : (
                         <ProductInfomationTable />
+                    ) : (
+                        <ProductInfomationGrid />
                     )}
                 </div>
             </div>

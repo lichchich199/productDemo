@@ -33,49 +33,34 @@ export default function ProductInfomationTable() {
 
     return (
         <div className="row">
-            {products.map((product: ProductFieldName) => {
-                return (
-                    <>
-                        <div className="col-lg-2 col-md-6 mb-4">
-                            <div className="card h-100">
-                                <div className="card-body" role="button">
-                                    <div>
-                                        <p>
-                                            <img
-                                                className="card-img-top"
-                                                src={
-                                                    product.image.length > 0
-                                                        ? product.image[0].toString()
-                                                        : ''
-                                                }
-                                                alt=""
-                                            />
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <h4 className="card-title">
-                                            <p>{product.name || ''}</p>
-                                        </h4>
-                                        <h5>{product.price.toString()} đ</h5>
-                                        <p className="card-text">
-                                            {product.description}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="card-footer d-flex justify-content-between">
-                                    <small className="text-muted">
-                                        Sold:{' '}
-                                        {product.quantitySolded.toString()}
-                                    </small>
-                                    <small className="text-muted">
-                                        &#9733; &#9733; &#9733; &#9733; &#9734;
-                                    </small>
-                                </div>
-                            </div>
-                        </div>
-                    </>
-                );
-            })}
+            <table className="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Quantity Solded</th>
+                        <th>Description</th>
+                        <th>Created At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {products.map((product: ProductFieldName, index) => {
+                        return (
+                            <tr onClick={() => {}}>
+                                <td>{++index}</td>
+                                <td>{product.name}</td>
+                                <td>{product.price.toString()}</td>
+                                <td>{product.quantity.toString()}</td>
+                                <td>{product.quantitySolded.toString()}</td>
+                                <td>{product.description}</td>
+                                <td>{product.createdAt}</td>
+                            </tr>
+                        );
+                    })}
+                </tbody>
+            </table>
         </div>
     );
 }
