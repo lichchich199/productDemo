@@ -17,6 +17,7 @@ export const getProductAsync = createAsyncThunk(
         name: ''
     },
     products: [],
+    productListSortParams: {},
     status: false
  }
 
@@ -29,6 +30,8 @@ export const getProductAsync = createAsyncThunk(
             const { name, value } = action.payload;
             state.searchQuery[name] = value;
         },
+        setCustomSortParam: ((state, action) => {
+        })
     },
     extraReducers: (builder) => {
         builder
@@ -50,7 +53,8 @@ export const getProductAsync = createAsyncThunk(
 
  // export actions
  export const {
-    setFormValue
+    setFormValue,
+    setCustomSortParam
  } = listProductSlice.actions
 
  export default listProductSlice.reducer
