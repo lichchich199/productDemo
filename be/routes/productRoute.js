@@ -6,8 +6,17 @@ const router = express.Router();
 // Define rest api
 router.get('/products', async (req, res) => {
     try {
-        const data = await modelProduct.find();
-        res.json(data);
+        var nameParam = req.query.name
+        var paramQuery = {};
+        if(nameParam) {
+            paramQuery.name = { $regex: nameParam, $options: 'i' }
+        } 
+        const data = await modelProduct.find(paramQuery);
+        res.status(200).json({
+            error: false,
+            message: '',
+            data: data
+        })
     } catch (error) {
         res.status(500).json({message: error.message})
     }

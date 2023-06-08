@@ -2,6 +2,7 @@ import { configureStore } from "./features/toolkit";
 import globalReducer from "./features/global/slices";
 import loginReducer from "./features/login/slices";
 import registerReducer from "./features/register/slices";
+import listProductReducer from "./features/listProduct/slices";
 
 
 //config store
@@ -9,7 +10,8 @@ const store = configureStore({
     reducer:{
         global: globalReducer,
         login: loginReducer,
-        register: registerReducer
+        register: registerReducer,
+        listProduct: listProductReducer
     }
 })
 

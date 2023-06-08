@@ -16,9 +16,9 @@ export default function Header() {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
     <div className="container-fluid">
-        <p className="navbar-brand mt-2 mt-lg-0">
+        <div className="navbar-brand mt-2 mt-lg-0 d-block">
             <h5 className="pt-1">LVN</h5>
-        </p>
+        </div>
         <button className="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <i className="fas fa-bars"></i>
         </button>

@@ -67,22 +67,21 @@ export const loginAsync = createAsyncThunk(
             })
             .addCase(loginAsync.fulfilled, (state, action: any) => {
                 const { error, data, message } = action.payload
-                console.log('payload', action.payload)
                 if(error) {
                     state.error = message
                 } else {
                     state.error = '';
                     let timeStamp = new Date().getTime().toString()
                     //set state
-                    state.email = data.email
-                    state.userId = data._id
+                    state.email = data?.email
+                    state.userId = data?._id
                     state.accessToken = ''
                     state.timestamp = timeStamp
                     state.isAdminUser =  false
 
                     //set localstorage
-                    localStorage.setItem('email', data.email)
-                    localStorage.setItem('userId', data._id)
+                    localStorage.setItem('email', data?.email)
+                    localStorage.setItem('userId', data?._id)
                     localStorage.setItem('accessToken', '')
                     localStorage.setItem('timestamp', timeStamp)
                     localStorage.setItem('isAdminUser', 'false')

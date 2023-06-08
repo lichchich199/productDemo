@@ -36,8 +36,6 @@ export const registerAsync = createAsyncThunk(
         setFormValue: (state : Draft<typeof initialState>, action: PayloadAction<{ name: keyof typeof initialState; value: typeof initialState[keyof typeof initialState] }>) => {
             const { name, value } = action.payload;
             (state[name] as any) = value;
-            console.log('name:', name);
-            console.log('value:', value);
             state.error = '';
         },
     },

@@ -1,17 +1,21 @@
 import { getListProduct } from "../listProduct/api"
-import { createSlice, createAsyncThunk} from "../toolkit"
+import { createSlice, createAsyncThunk, Draft, PayloadAction} from "../toolkit"
 
 // login async function
 export const getProductAsync = createAsyncThunk(
-    "login/login",
-    async () => {
-      const response = await getListProduct()
+    "listProduct/listProduct",
+    async (_, thunkAPI : any) => {
+    const {searchQuery } = thunkAPI.getState().listProduct
+      const response = await getListProduct(searchQuery)
       return response.data
     }
 )
 
 // init global state
  const initialState = {
+    searchQuery: {
+        name: ''
+    },
     products: [],
     status: false
  }
@@ -21,6 +25,10 @@ export const getProductAsync = createAsyncThunk(
     name:  'login',
     initialState,
     reducers: {
+        setFormValue: (state : Draft<typeof initialState>, action: PayloadAction<{ name: keyof typeof initialState.searchQuery; value: string }>) => {
+            const { name, value } = action.payload;
+            state.searchQuery[name] = value;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -42,6 +50,7 @@ export const getProductAsync = createAsyncThunk(
 
  // export actions
  export const {
+    setFormValue
  } = listProductSlice.actions
 
  export default listProductSlice.reducer
