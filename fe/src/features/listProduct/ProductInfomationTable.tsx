@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { AppDispatch, RootState } from '../../store';
 import { getProductAsync } from './slices';
+import { formatDate } from '../../utils/formatDate';
+import { sortCommon } from '../../utils/sortCommon';
 
 type ProductFieldName = {
     _id: String;
@@ -21,16 +23,17 @@ type ProductFieldName = {
 };
 
 export default function ProductInfomationTable() {
-    const { products, searchQuery } = useSelector(
+    var { products, productListSortParams } = useSelector(
         (state: RootState) => state.listProduct
     );
     const dispatch: AppDispatch = useDispatch();
-    console.log('data tại list:', searchQuery);
     useEffect(() => {
         dispatch(getProductAsync());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
+    console.log('sort params:', productListSortParams);
+    var productList = sortCommon(products, productListSortParams);
+    console.log('productListSorted:', productList);
     return (
         <div className="row">
             <table className="table table-hover">
@@ -46,7 +49,7 @@ export default function ProductInfomationTable() {
                     </tr>
                 </thead>
                 <tbody>
-                    {products.map((product: ProductFieldName, index) => {
+                    {productList.map((product: ProductFieldName, index) => {
                         return (
                             <tr onClick={() => {}}>
                                 <td>{++index}</td>
@@ -55,7 +58,9 @@ export default function ProductInfomationTable() {
                                 <td>{product.quantity.toString()}</td>
                                 <td>{product.quantitySolded.toString()}</td>
                                 <td>{product.description}</td>
-                                <td>{product.createdAt}</td>
+                                <td>
+                                    {formatDate(product.createdAt.toString())}
+                                </td>
                             </tr>
                         );
                     })}

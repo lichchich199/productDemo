@@ -1,10 +1,15 @@
-import { ChangeEvent, KeyboardEvent, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { ChangeEvent, KeyboardEvent, MouseEvent, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { faList, faTable } from '@fortawesome/fontawesome-free-solid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { AppDispatch, RootState } from '../../store';
-import { getProductAsync, setFormValue } from './slices';
+import { AppDispatch } from '../../store';
+import {
+    getProductAsync,
+    setCustomSortParam,
+    setFormValue,
+    SortParamKey,
+} from './slices';
 
 type FormFieldName = 'name';
 interface ActionsListProps {
@@ -14,11 +19,7 @@ interface ActionsListProps {
 export default function ActionsList({
     handleChangStatusList,
 }: ActionsListProps) {
-    const { searchQuery } = useSelector(
-        (state: RootState) => state.listProduct
-    );
     const dispatch: AppDispatch = useDispatch();
-    console.log('data tại list:', searchQuery);
     useEffect(() => {
         dispatch(getProductAsync());
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -26,7 +27,7 @@ export default function ActionsList({
 
     // dispatch action to change value of state
     const dispatchSetFormValue = (event: ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = event.target;
+        var { name, value } = event.target;
         dispatch(setFormValue({ name: name as FormFieldName, value }));
     };
     // dispatch action to search product
@@ -35,14 +36,47 @@ export default function ActionsList({
             dispatch(getProductAsync());
         }
     };
+    // handle sort
+    const handleSort = (event: MouseEvent<HTMLButtonElement>) => {
+        const { name, value } = event.currentTarget;
+        dispatch(setCustomSortParam({ name: name as SortParamKey, value }));
+    };
     return (
         <div className="row mb-3">
             <div className="col-6">
                 <span>Sort By : </span>
-                <button type="button">Price Tăng Dần</button>
-                <button type="button">Price Giảm Dần</button>
-                <button type="button">Date Tăng Dần</button>
-                <button type="button">Date Giảm Dần</button>
+                <button
+                    type="button"
+                    name="price"
+                    value="DESC"
+                    onClick={(e) => handleSort(e)}
+                >
+                    Price Tăng Dần
+                </button>
+                <button
+                    type="button"
+                    name="price"
+                    value="ASC"
+                    onClick={(e) => handleSort(e)}
+                >
+                    Price Giảm Dần
+                </button>
+                <button
+                    type="button"
+                    name="createdAt"
+                    value="DESC"
+                    onClick={(e) => handleSort(e)}
+                >
+                    Date Tăng Dần
+                </button>
+                <button
+                    type="button"
+                    name="createdAt"
+                    value="ASC"
+                    onClick={(e) => handleSort(e)}
+                >
+                    Date Giảm Dần
+                </button>
             </div>
             <div className="col-5 d-flex justify-content-between">
                 <input

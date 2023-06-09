@@ -12,7 +12,7 @@ import ProductInfomationTable from '../features/listProduct/ProductInfomationTab
 export default function ListProduct() {
     const navigate = useNavigate();
     const loginState = useSelector((state: RootState) => state.login);
-    const [listStatus, setListStatus] = useState(true);
+    const [listStatus, setListStatus] = useState(false);
 
     // check login status
     useEffect(() => {
