@@ -33,10 +33,9 @@ export default function ProductInfomation() {
 
     return (
         <div className="row">
-            {products.map((product: ProductFieldName) => {
+            {products.map((product: ProductFieldName, index) => {
                 return (
-                    <>
-                        <div className="col-lg-2 col-md-6 mb-4">
+                        <div key={index} className="col-lg-2 col-md-6 mb-4">
                             <div className="card h-100">
                                 <div className="card-body" role="button">
                                     <div>
@@ -73,7 +72,6 @@ export default function ProductInfomation() {
                                 </div>
                             </div>
                         </div>
-                    </>
                 );
             })}
         </div>

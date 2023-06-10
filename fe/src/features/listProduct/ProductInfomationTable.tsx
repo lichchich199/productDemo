@@ -51,7 +51,7 @@ export default function ProductInfomationTable() {
                 <tbody>
                     {productList.map((product: ProductFieldName, index) => {
                         return (
-                            <tr onClick={() => {}}>
+                            <tr key={index} onClick={() => {}}>
                                 <td>{++index}</td>
                                 <td>{product.name}</td>
                                 <td>{product.price.toString()}</td>

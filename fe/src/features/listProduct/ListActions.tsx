@@ -1,15 +1,16 @@
 import { ChangeEvent, KeyboardEvent, MouseEvent, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { faList, faTable } from '@fortawesome/fontawesome-free-solid';
+import { faList, faTable, faSortDown, faSortUp } from '@fortawesome/fontawesome-free-solid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { AppDispatch } from '../../store';
+import { AppDispatch, RootState } from '../../store';
 import {
     getProductAsync,
     setCustomSortParam,
     setFormValue,
     SortParamKey,
 } from './slices';
+import { useSelector } from 'react-redux';
 
 type FormFieldName = 'name';
 interface ActionsListProps {
@@ -20,6 +21,9 @@ export default function ActionsList({
     handleChangStatusList,
 }: ActionsListProps) {
     const dispatch: AppDispatch = useDispatch();
+    var { productListSortParams } = useSelector(
+        (state: RootState) => state.listProduct
+    );
     useEffect(() => {
         dispatch(getProductAsync());
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -43,40 +47,49 @@ export default function ActionsList({
     };
     return (
         <div className="row mb-3">
-            <div className="col-6">
-                <span>Sort By : </span>
-                <button
-                    type="button"
-                    name="price"
-                    value="DESC"
-                    onClick={(e) => handleSort(e)}
-                >
-                    Price Tăng Dần
-                </button>
-                <button
-                    type="button"
-                    name="price"
-                    value="ASC"
-                    onClick={(e) => handleSort(e)}
-                >
-                    Price Giảm Dần
-                </button>
-                <button
-                    type="button"
-                    name="createdAt"
-                    value="DESC"
-                    onClick={(e) => handleSort(e)}
-                >
-                    Date Tăng Dần
-                </button>
-                <button
-                    type="button"
-                    name="createdAt"
-                    value="ASC"
-                    onClick={(e) => handleSort(e)}
-                >
-                    Date Giảm Dần
-                </button>
+            <div className="col-6 d-flex">
+                <div style={{flex: '1'}}>
+                    <span>Price : </span>
+                    <button
+                        className={`btn ${(productListSortParams[0].orderBy === 'ASC' && productListSortParams[0].status) ? 'btn-primary' :''}`}
+                        type="button"
+                        name="price"
+                        value="ASC"
+                        onClick={(e) => handleSort(e)}
+                    >
+                        <FontAwesomeIcon icon={faSortUp as any}/>
+                    </button>
+                    <button
+                        className={`btn ${(productListSortParams[0].orderBy === 'DESC' && productListSortParams[0].status) ? 'btn-primary' :''}`}
+                        type="button"
+                        name="price"
+                        value="DESC"
+                        onClick={(e) => handleSort(e)}
+                    >
+                        <FontAwesomeIcon icon={faSortDown as any}/>
+                    </button>
+                </div>
+                <div style={{flex: '3'}}>
+                    <span>Created At : </span>
+                    <button
+                        className={`btn ${(productListSortParams[1].orderBy === 'ASC' && productListSortParams[1].status) ? 'btn-primary' :''}`}
+                        type="button"
+                        name="createdAt"
+                        value="ASC"
+                        onClick={(e) => handleSort(e)}
+                    >
+                        <FontAwesomeIcon icon={faSortUp as any}/>
+                    </button>
+                    <button
+                        className={`btn ${(productListSortParams[1].orderBy === 'DESC' && productListSortParams[1].status) ? 'btn-primary' :''}`}
+                        type="button"
+                        name="createdAt"
+                        value="DESC"
+                        onClick={(e) => handleSort(e)}
+                    >
+                        <FontAwesomeIcon icon={faSortDown as any}/>
+                    </button>
+                </div>
             </div>
             <div className="col-5 d-flex justify-content-between">
                 <input

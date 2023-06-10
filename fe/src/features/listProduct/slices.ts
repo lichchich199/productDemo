@@ -26,10 +26,12 @@ const initialState = {
         {
             field: 'price',
             orderBy: '',
+            status: false
         },
         {
             field: 'createdAt',
             orderBy: '',
+            status: false
         },
     ],
     status: false,
@@ -58,7 +60,7 @@ export const listProductSlice = createSlice({
                 value: string;
             }>
         ) => {
-            let newSortParams: { field: string; orderBy: string }[] = [
+            let newSortParams: { field: string; orderBy: string; status: boolean }[] = [
                 ...state.productListSortParams,
             ];
             const { name, value } = action.payload;
@@ -66,14 +68,20 @@ export const listProductSlice = createSlice({
                 ({ field }) => field === name
             );
             if (
-                includedIndex >= 0 &&
-                newSortParams[includedIndex]?.orderBy !== value
+                includedIndex >= 0
             ) {
-                newSortParams[includedIndex].orderBy = value;
+                if(newSortParams[includedIndex]?.orderBy !== value) {
+                    newSortParams[includedIndex].orderBy = value;
+                    newSortParams[includedIndex].status = true
+                } else {
+                    newSortParams[includedIndex].status = false
+                }
+                console.log('newSortParams', newSortParams)
             } else if (includedIndex === -1) {
                 (newSortParams as any).push({
                     field: name,
                     orderBy: value,
+                    status: true
                 });
             }
             state.productListSortParams = newSortParams;
