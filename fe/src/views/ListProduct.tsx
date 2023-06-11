@@ -8,6 +8,7 @@ import ProductInfomationGrid from '../features/listProduct/ProductInfomationGrid
 import CategoryList from '../features/listProduct/CategoryList';
 import ListActions from '../features/listProduct/ListActions';
 import ProductInfomationTable from '../features/listProduct/ProductInfomationTable';
+import Paging from '../components/organisms/Paging';
 
 export default function ListProduct() {
     const navigate = useNavigate();
@@ -41,6 +42,7 @@ export default function ListProduct() {
                     )}
                 </div>
             </div>
+            <Paging/>
         </Layout>
     );
 }
