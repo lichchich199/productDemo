@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import './paging.css'
 
 type Props = {
     currentPage: number;
@@ -38,26 +39,28 @@ export default function Paging({
                         backPage();
                     }}
                 >
-                    <a className="page-link" href="#!" aria-label="Previous">
+                    <button className="btn page-button" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                         <span className="sr-only">Previous</span>
-                    </a>
+                    </button>
                 </li>
                 {Array.from({ length: totalPage }).map((_, index) => {
                     let numPage = ++index;
                     return (
                         <li
                             className={`page-item ${
-                                currentPage === numPage ? 'active' : ''
+                                currentPage === numPage ? 'btn-primary' : ''
                             }`}
                             onClick={() => {
                                 setCurrentPage(numPage);
                                 setCurPage(numPage);
                             }}
                         >
-                            <a className="page-link" href="#!">
+                            <button className={`btn page-button ${
+                                currentPage === numPage ? 'btn-primary' : ''
+                            }`} >
                                 {numPage}
-                            </a>
+                            </button>
                         </li>
                     );
                 })}
@@ -67,10 +70,10 @@ export default function Paging({
                         nextPage();
                     }}
                 >
-                    <a className="page-link" href="#!" aria-label="Next">
+                    <button className="btn page-button" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                         <span className="sr-only">Next</span>
-                    </a>
+                    </button>
                 </li>
             </ul>
         </nav>

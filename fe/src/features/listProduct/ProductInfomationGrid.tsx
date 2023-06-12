@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { AppDispatch, RootState } from '../../store';
 import { getProductAsync } from './slices';
+import { sortCommon } from '../../utils/sortCommon';
 
 type ProductFieldName = {
     _id: String;
@@ -20,20 +21,30 @@ type ProductFieldName = {
     status: String;
 };
 
-export default function ProductInfomation() {
-    const { products, searchQuery } = useSelector(
+type Props = {
+    currentPage: number;
+    limit: number;
+};
+
+export default function ProductInfomation({currentPage = 1,
+    limit = 1,
+}: Props) {
+    const { products, productListSortParams } = useSelector(
         (state: RootState) => state.listProduct
     );
     const dispatch: AppDispatch = useDispatch();
-    console.log('data tại list:', searchQuery);
     useEffect(() => {
         dispatch(getProductAsync());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
+    var productList = sortCommon(products, productListSortParams);
+    productList = productList.slice(
+        limit * (currentPage - 1),
+        limit * (currentPage - 1) + limit
+    );
     return (
         <div className="row">
-            {products.map((product: ProductFieldName, index) => {
+            {productList.map((product: ProductFieldName, index) => {
                 return (
                         <div key={index} className="col-lg-2 col-md-6 mb-4">
                             <div className="card h-100">
