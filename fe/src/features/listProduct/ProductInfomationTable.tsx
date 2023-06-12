@@ -22,7 +22,15 @@ type ProductFieldName = {
     status: String;
 };
 
-export default function ProductInfomationTable() {
+type Props = {
+    currentPage: number;
+    limit: number;
+};
+
+export default function ProductInfomationTable({
+    currentPage = 1,
+    limit = 1,
+}: Props) {
     var { products, productListSortParams } = useSelector(
         (state: RootState) => state.listProduct
     );
@@ -31,9 +39,11 @@ export default function ProductInfomationTable() {
         dispatch(getProductAsync());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    console.log('sort params:', productListSortParams);
     var productList = sortCommon(products, productListSortParams);
-    console.log('productListSorted:', productList);
+    productList = productList.slice(
+        limit * (currentPage - 1),
+        limit * (currentPage - 1) + limit
+    );
     return (
         <div className="row">
             <table className="table table-hover">

@@ -26,14 +26,15 @@ const initialState = {
         {
             field: 'price',
             orderBy: '',
-            status: false
+            status: false,
         },
         {
             field: 'createdAt',
             orderBy: '',
-            status: false
+            status: false,
         },
     ],
+    limit: 5,
     status: false,
 };
 export type SortParamKey = keyof typeof initialState.productListSortParams;
@@ -60,28 +61,28 @@ export const listProductSlice = createSlice({
                 value: string;
             }>
         ) => {
-            let newSortParams: { field: string; orderBy: string; status: boolean }[] = [
-                ...state.productListSortParams,
-            ];
+            let newSortParams: {
+                field: string;
+                orderBy: string;
+                status: boolean;
+            }[] = [...state.productListSortParams];
             const { name, value } = action.payload;
             const includedIndex = newSortParams.findIndex(
                 ({ field }) => field === name
             );
-            if (
-                includedIndex >= 0
-            ) {
-                if(newSortParams[includedIndex]?.orderBy !== value) {
+            if (includedIndex >= 0) {
+                if (newSortParams[includedIndex]?.orderBy !== value) {
                     newSortParams[includedIndex].orderBy = value;
-                    newSortParams[includedIndex].status = true
+                    newSortParams[includedIndex].status = true;
                 } else {
-                    newSortParams[includedIndex].status = false
+                    newSortParams[includedIndex].status = false;
                 }
-                console.log('newSortParams', newSortParams)
+                console.log('newSortParams', newSortParams);
             } else if (includedIndex === -1) {
                 (newSortParams as any).push({
                     field: name,
                     orderBy: value,
-                    status: true
+                    status: true,
                 });
             }
             state.productListSortParams = newSortParams;
