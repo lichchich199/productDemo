@@ -50,6 +50,7 @@ export default function AddForm(props: Props) {
         register('color').onChange(fakeEvent);
     };
 
+    console.log('errors', errors);
     return (
         <form
             onSubmit={handleSubmit((data) => {
@@ -157,6 +158,10 @@ export default function AddForm(props: Props) {
                         ]}
                         onChange={handleSelectChange}
                     />
+                    <input
+                        type="hidden"
+                        className={`${errors.color ? 'is-invalid' : ''}`}
+                    ></input>
                     <div className="invalid-feedback">
                         {errors.color?.message?.toString()}
                     </div>
