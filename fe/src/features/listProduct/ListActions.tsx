@@ -1,6 +1,11 @@
 import { ChangeEvent, KeyboardEvent, MouseEvent, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { faList, faTable, faSortDown, faSortUp } from '@fortawesome/fontawesome-free-solid';
+import {
+    faList,
+    faTable,
+    faSortDown,
+    faSortUp,
+} from '@fortawesome/fontawesome-free-solid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { AppDispatch, RootState } from '../../store';
@@ -11,6 +16,7 @@ import {
     SortParamKey,
 } from './slices';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
 
 type FormFieldName = 'name';
 interface ActionsListProps {
@@ -20,6 +26,7 @@ interface ActionsListProps {
 export default function ActionsList({
     handleChangStatusList,
 }: ActionsListProps) {
+    const navigate = useNavigate();
     const dispatch: AppDispatch = useDispatch();
     var { productListSortParams } = useSelector(
         (state: RootState) => state.listProduct
@@ -48,46 +55,66 @@ export default function ActionsList({
     return (
         <div className="row mb-3">
             <div className="col-6 d-flex">
-                <div style={{flex: '1'}}>
+                <div style={{ flex: '1' }}>
                     <span>Price : </span>
                     <button
-                        className={`btn ${(productListSortParams[0].orderBy === 'ASC' && productListSortParams[0].status) ? 'btn-primary' :''}`}
+                        className={`btn ${
+                            productListSortParams[0].orderBy === 'ASC' &&
+                            productListSortParams[0].status
+                                ? 'btn-primary'
+                                : ''
+                        }`}
                         type="button"
                         name="price"
                         value="ASC"
                         onClick={(e) => handleSort(e)}
                     >
-                        <FontAwesomeIcon icon={faSortUp as any}/>
+                        <FontAwesomeIcon icon={faSortUp as any} />
                     </button>
                     <button
-                        className={`btn ${(productListSortParams[0].orderBy === 'DESC' && productListSortParams[0].status) ? 'btn-primary' :''}`}
+                        className={`btn ${
+                            productListSortParams[0].orderBy === 'DESC' &&
+                            productListSortParams[0].status
+                                ? 'btn-primary'
+                                : ''
+                        }`}
                         type="button"
                         name="price"
                         value="DESC"
                         onClick={(e) => handleSort(e)}
                     >
-                        <FontAwesomeIcon icon={faSortDown as any}/>
+                        <FontAwesomeIcon icon={faSortDown as any} />
                     </button>
                 </div>
-                <div style={{flex: '3'}}>
+                <div style={{ flex: '3' }}>
                     <span>Created At : </span>
                     <button
-                        className={`btn ${(productListSortParams[1].orderBy === 'ASC' && productListSortParams[1].status) ? 'btn-primary' :''}`}
+                        className={`btn ${
+                            productListSortParams[1].orderBy === 'ASC' &&
+                            productListSortParams[1].status
+                                ? 'btn-primary'
+                                : ''
+                        }`}
                         type="button"
                         name="createdAt"
                         value="ASC"
                         onClick={(e) => handleSort(e)}
                     >
-                        <FontAwesomeIcon icon={faSortUp as any}/>
+                        <FontAwesomeIcon icon={faSortUp as any} />
                     </button>
                     <button
-                        className={`btn ${(productListSortParams[1].orderBy === 'DESC' && productListSortParams[1].status) ? 'btn-primary' :''}`}
+                        className={`btn ${
+                            productListSortParams[1].orderBy === 'DESC' &&
+                            productListSortParams[1].status
+                                ? 'btn-primary'
+                                : ''
+                        }`}
                         type="button"
                         name="createdAt"
                         value="DESC"
                         onClick={(e) => handleSort(e)}
                     >
-                        <FontAwesomeIcon icon={faSortDown as any}/>
+                        <FontAwesomeIcon icon={faSortDown as any} />
                     </button>
                 </div>
             </div>
@@ -102,7 +129,14 @@ export default function ActionsList({
                     onChange={dispatchSetFormValue}
                     onKeyDown={handleKeyDown}
                 />
-                <button type="submit">New</button>
+                <button
+                    type="button"
+                    onClick={() => {
+                        navigate(`/product/add`);
+                    }}
+                >
+                    New
+                </button>
             </div>
             <div className="col-1">
                 <div className="d-flex" style={{ marginLeft: 'auto' }}>
