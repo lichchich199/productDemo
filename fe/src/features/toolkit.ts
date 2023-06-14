@@ -1,29 +1,61 @@
-import { createSlice, configureStore, createAsyncThunk as _createAsyncThunk, Draft, PayloadAction } from "@reduxjs/toolkit";
-import { toggleLoadingStatus } from "./global/slices";
+import {
+    createSlice,
+    configureStore,
+    createAsyncThunk as _createAsyncThunk,
+    Draft,
+    PayloadAction,
+    AsyncThunkPayloadCreator,
+    AsyncThunk,
+} from '@reduxjs/toolkit';
+import { toggleLoadingStatus } from './global/slices';
 
 type Props = {
-    name: string,
-    callback: (payload : void, thunkAPI : Object) => {},
-    errorCallback ?: (error: any, thunkAPI : Object, payload: void) => {}
-}
+    name: string;
+    callback: (payload: void, thunkAPI: Object) => {};
+    errorCallback?: (error: any, thunkAPI: Object, payload: void) => {};
+};
 
-const createAsyncThunk = (name : Props['name'], callback : Props['callback'], errorCallback ?: Props['errorCallback']) => {
-    return _createAsyncThunk(name, async (payload, thunkAPI) => {
+type ThunkAPI = {
+    dispatch: any;
+    getState: () => any;
+    extra: any;
+    requestId: string;
+    rejectWithValue: any;
+};
+
+type CreateAsyncThunkConfig = {
+    rejectValue: any;
+    serializedErrorType: any;
+    typePrefix: string;
+};
+
+function createAsyncThunk<Returned, ThunkArg = void>(
+    type: string,
+    payloadCreator: AsyncThunkPayloadCreator<Returned, ThunkArg, ThunkAPI>,
+    options?: CreateAsyncThunkConfig
+): AsyncThunk<Returned, ThunkArg, ThunkAPI> {
+    const enhancedPayloadCreator: AsyncThunkPayloadCreator<
+        Returned | ReturnType<typeof payloadCreator>,
+        ThunkArg,
+        ThunkAPI
+    > = async (payload: ThunkArg, thunkAPI: ThunkAPI) => {
         try {
+            thunkAPI.dispatch(toggleLoadingStatus()); // Dispatch toggleLoadingStatus(true) to indicate loading
+            const result = await payloadCreator(payload, thunkAPI as any);
             thunkAPI.dispatch(toggleLoadingStatus());
-            const res = await callback(payload , thunkAPI);
-            thunkAPI.dispatch(toggleLoadingStatus());
-            return res
+            return result;
         } catch (error) {
-            let errorRes = {}
-            if(typeof errorCallback != 'undefined') {
-                errorRes = await errorCallback(error, thunkAPI, payload)
-            }
             thunkAPI.dispatch(toggleLoadingStatus());
-            return thunkAPI.rejectWithValue(errorRes);
+            return thunkAPI.rejectWithValue(error);
         }
-    })
+    };
+
+    return _createAsyncThunk<Returned, ThunkArg, ThunkAPI>(
+        type,
+        enhancedPayloadCreator as any,
+        options as any
+    );
 }
 
 export type { Draft, PayloadAction };
-export {createSlice, createAsyncThunk, configureStore};
+export { createSlice, createAsyncThunk, configureStore };

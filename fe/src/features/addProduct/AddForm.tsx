@@ -3,6 +3,10 @@ import Select, { MultiValue } from 'react-select';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { AppDispatch } from '../../store';
+import { useDispatch } from 'react-redux';
+import { addProductAsync } from './slices';
+// import { addProductAsync } from './slices';
 
 type Props = {
     valuesEdit: string;
@@ -16,10 +20,22 @@ interface OptionType {
     label: string;
 }
 
+type formAddType = {
+    name: string;
+    price: number;
+    brand: string;
+    category: string;
+    image: string[];
+    color: string[];
+    size: number[];
+    quantity: number;
+    description: string;
+};
+
 // form add edit project
 export default function AddForm(props: Props) {
     const navigate = useNavigate();
-
+    const dispatch: AppDispatch = useDispatch();
     // validate
     const validationSchema = Yup.object().shape({
         name: Yup.string().required('Name is required'),
@@ -50,12 +66,17 @@ export default function AddForm(props: Props) {
         register('color').onChange(fakeEvent);
     };
 
+    const dispatchAddProduct = (data: formAddType) => {
+        dispatch(addProductAsync(data));
+    };
+
     console.log('errors', errors);
     return (
         <form
             onSubmit={handleSubmit((data) => {
                 console.log(data);
-                props.onSubmit(data);
+                // dispatchAddProduct(data)
+                // props.onSubmit(data);
             })}
         >
             <div className="form-row d-flex justify-content-between">
@@ -98,9 +119,9 @@ export default function AddForm(props: Props) {
                         aria-label="Default select example"
                     >
                         <option value="">Choose brand...</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        <option value="1">Krik</option>
+                        <option value="2">SecondHand</option>
+                        <option value="3">Bee</option>
                     </select>
                     <div className="invalid-feedback">
                         {errors.brand?.message?.toString()}
@@ -119,9 +140,9 @@ export default function AddForm(props: Props) {
                         aria-label="Default select example"
                     >
                         <option value="">Choose category...</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        <option value="1">Clothes</option>
+                        <option value="2">Shoes</option>
+                        <option value="3">Accessory</option>
                     </select>
                     <div className="invalid-feedback">
                         {errors.category?.message?.toString()}
@@ -152,9 +173,9 @@ export default function AddForm(props: Props) {
                         {...register('color')}
                         isMulti
                         options={[
-                            { value: 'option1', label: 'Option 1' },
-                            { value: 'option2', label: 'Option 2' },
-                            { value: 'option3', label: 'Option 3' },
+                            { value: 'black', label: 'Black' },
+                            { value: 'white', label: 'White' },
+                            { value: 'mix', label: 'Mix' },
                         ]}
                         onChange={handleSelectChange}
                     />
@@ -204,7 +225,7 @@ export default function AddForm(props: Props) {
                 <div className="form-group col">
                     <label>Desctiption</label>
                     <input
-                        type="number"
+                        type="text"
                         {...register('description')}
                         className={`form-control ${
                             errors.description ? 'is-invalid' : ''
