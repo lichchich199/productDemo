@@ -1,11 +1,11 @@
-import { useForm } from 'react-hook-form';
-import Select, { MultiValue } from 'react-select';
-import { useNavigate } from 'react-router-dom';
-import * as Yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { AppDispatch } from '../../store';
-import { useDispatch } from 'react-redux';
-import { addProductAsync } from './slices';
+import { useForm } from "react-hook-form";
+import Select, { MultiValue } from "react-select";
+import { useNavigate } from "react-router-dom";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { AppDispatch } from "../../store";
+import { useDispatch } from "react-redux";
+import { addProductAsync } from "./slices";
 // import { addProductAsync } from './slices';
 
 type Props = {
@@ -38,15 +38,15 @@ export default function AddForm(props: Props) {
     const dispatch: AppDispatch = useDispatch();
     // validate
     const validationSchema = Yup.object().shape({
-        name: Yup.string().required('Name is required'),
-        price: Yup.string().required('Price is required'),
-        brand: Yup.string().required('Brand is required'),
-        category: Yup.string().required('Category is required'),
-        image: Yup.string().required('Image is required'),
-        color: Yup.array().min(1, 'Color is required'),
-        size: Yup.string().required('Size is required'),
-        quantity: Yup.string().required('Quantity is required'),
-        description: Yup.string().max(255, 'Max length is 255 character'),
+        name: Yup.string().required("Name is required"),
+        price: Yup.string().required("Price is required"),
+        brand: Yup.string().required("Brand is required"),
+        category: Yup.string().required("Category is required"),
+        image: Yup.string().required("Image is required"),
+        color: Yup.array().min(1, "Color is required"),
+        size: Yup.string().required("Size is required"),
+        quantity: Yup.string().required("Quantity is required"),
+        description: Yup.string().max(255, "Max length is 255 character"),
     });
     const formOptions = { resolver: yupResolver(validationSchema) };
     // values default
@@ -58,24 +58,25 @@ export default function AddForm(props: Props) {
         const selectedValues = selectedOptions.map((option) => option.value);
         const fakeEvent = {
             target: {
-                name: 'color',
+                name: "color",
                 value: selectedValues,
             },
         };
-        console.log('data select:', selectedValues);
-        register('color').onChange(fakeEvent);
+        console.log("data select:", selectedValues);
+        register("color").onChange(fakeEvent);
     };
 
     const dispatchAddProduct = (data: formAddType) => {
         dispatch(addProductAsync(data));
+        navigate("/");
     };
 
-    console.log('errors', errors);
+    console.log("errors", errors);
     return (
         <form
-            onSubmit={handleSubmit((data) => {
+            onSubmit={handleSubmit((data: any) => {
                 console.log(data);
-                // dispatchAddProduct(data)
+                dispatchAddProduct(data);
                 // props.onSubmit(data);
             })}
         >
@@ -84,9 +85,9 @@ export default function AddForm(props: Props) {
                     <label>Name</label>
                     <input
                         type="text"
-                        {...register('name')}
+                        {...register("name")}
                         className={`form-control ${
-                            errors.name ? 'is-invalid' : ''
+                            errors.name ? "is-invalid" : ""
                         }`}
                     />
                     <div className="invalid-feedback">
@@ -97,9 +98,9 @@ export default function AddForm(props: Props) {
                     <label>Price</label>
                     <input
                         type="number"
-                        {...register('price')}
+                        {...register("price")}
                         className={`form-control ${
-                            errors.price ? 'is-invalid' : ''
+                            errors.price ? "is-invalid" : ""
                         }`}
                     />
                     <div className="invalid-feedback">
@@ -113,9 +114,9 @@ export default function AddForm(props: Props) {
                     <label>Brand</label>
                     <select
                         className={`form-control ${
-                            errors.brand ? 'is-invalid' : ''
+                            errors.brand ? "is-invalid" : ""
                         }`}
-                        {...register('brand')}
+                        {...register("brand")}
                         aria-label="Default select example"
                     >
                         <option value="">Choose brand...</option>
@@ -134,9 +135,9 @@ export default function AddForm(props: Props) {
                     <label>Category</label>
                     <select
                         className={`form-control ${
-                            errors.category ? 'is-invalid' : ''
+                            errors.category ? "is-invalid" : ""
                         }`}
-                        {...register('category')}
+                        {...register("category")}
                         aria-label="Default select example"
                     >
                         <option value="">Choose category...</option>
@@ -155,9 +156,9 @@ export default function AddForm(props: Props) {
                     <label>Image</label>
                     <input
                         type="text"
-                        {...register('image')}
+                        {...register("image")}
                         className={`form-control ${
-                            errors.image ? 'is-invalid' : ''
+                            errors.image ? "is-invalid" : ""
                         }`}
                     />
                     <div className="invalid-feedback">
@@ -170,18 +171,18 @@ export default function AddForm(props: Props) {
                 <div className="form-group col">
                     <label>Color</label>
                     <Select
-                        {...register('color')}
+                        {...register("color")}
                         isMulti
                         options={[
-                            { value: 'black', label: 'Black' },
-                            { value: 'white', label: 'White' },
-                            { value: 'mix', label: 'Mix' },
+                            { value: "black", label: "Black" },
+                            { value: "white", label: "White" },
+                            { value: "mix", label: "Mix" },
                         ]}
                         onChange={handleSelectChange}
                     />
                     <input
                         type="hidden"
-                        className={`${errors.color ? 'is-invalid' : ''}`}
+                        className={`${errors.color ? "is-invalid" : ""}`}
                     ></input>
                     <div className="invalid-feedback">
                         {errors.color?.message?.toString()}
@@ -194,9 +195,9 @@ export default function AddForm(props: Props) {
                     <label>Size</label>
                     <input
                         type="text"
-                        {...register('size')}
+                        {...register("size")}
                         className={`form-control ${
-                            errors.size ? 'is-invalid' : ''
+                            errors.size ? "is-invalid" : ""
                         }`}
                     />
                     <div className="invalid-feedback">
@@ -210,9 +211,9 @@ export default function AddForm(props: Props) {
                     <label>Quantity</label>
                     <input
                         type="number"
-                        {...register('quantity')}
+                        {...register("quantity")}
                         className={`form-control ${
-                            errors.quantity ? 'is-invalid' : ''
+                            errors.quantity ? "is-invalid" : ""
                         }`}
                     />
                     <div className="invalid-feedback">
@@ -226,9 +227,9 @@ export default function AddForm(props: Props) {
                     <label>Desctiption</label>
                     <input
                         type="text"
-                        {...register('description')}
+                        {...register("description")}
                         className={`form-control ${
-                            errors.description ? 'is-invalid' : ''
+                            errors.description ? "is-invalid" : ""
                         }`}
                     />
                     <div className="invalid-feedback">

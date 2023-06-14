@@ -13,7 +13,7 @@ type paramType = {
 };
 
 export const addProduct = async (params: paramType) => {
-    console.log('params');
+    console.log('params', params);
     var paramAdd = {
         name: params.name,
         price: params.price,
@@ -27,5 +27,6 @@ export const addProduct = async (params: paramType) => {
         quantitySolded: 0,
         description: params.description,
     };
+    console.log('paramAdd', paramAdd)
     return await axios.post(`http://localhost:5000/api/product`, paramAdd);
 };
