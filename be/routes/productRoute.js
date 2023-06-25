@@ -1,5 +1,6 @@
 import express from "express";
 import modelProduct from "../models/modelProduct.js"
+import mongoose from "mongoose";
 
 const router = express.Router();
 
@@ -66,7 +67,7 @@ router.put('/product/:id', async (req, res) => {
 router.delete('/product/:id', async (req, res) => {
     try {
         const id = req.params.id;
-        await modelProduct.findByIdAndDelete(id);
+        await modelProduct.findByIdAndDelete(new mongoose.Types.ObjectId(id));
         res.send(`Product with data id = ${id} has been deleted`)
     } catch (error) {
         res.status(400).json({ message: error.message })

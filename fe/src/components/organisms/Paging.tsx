@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './paging.css'
+import './paging.css';
 
 type Props = {
     currentPage: number;
@@ -31,17 +31,17 @@ export default function Paging({
         }
     };
     return (
-        <nav aria-label="Page navigation example" style={{ marginLeft: '50%' }}>
-            <ul className="pagination">
+        <nav aria-label='Page navigation example' style={{ marginLeft: '50%' }}>
+            <ul className='pagination'>
                 <li
-                    className="page-item"
+                    className='page-item'
                     onClick={() => {
                         backPage();
                     }}
                 >
-                    <button className="btn page-button" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                        <span className="sr-only">Previous</span>
+                    <button className='btn page-button' aria-label='Previous'>
+                        <span aria-hidden='true'>&laquo;</span>
+                        <span className='sr-only'>Previous</span>
                     </button>
                 </li>
                 {Array.from({ length: totalPage }).map((_, index) => {
@@ -56,23 +56,25 @@ export default function Paging({
                                 setCurPage(numPage);
                             }}
                         >
-                            <button className={`btn page-button ${
-                                currentPage === numPage ? 'btn-primary' : ''
-                            }`} >
+                            <button
+                                className={`btn page-button ${
+                                    currentPage === numPage ? 'btn-primary' : ''
+                                }`}
+                            >
                                 {numPage}
                             </button>
                         </li>
                     );
                 })}
                 <li
-                    className="page-item"
+                    className='page-item'
                     onClick={() => {
                         nextPage();
                     }}
                 >
-                    <button className="btn page-button" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                        <span className="sr-only">Next</span>
+                    <button className='btn page-button' aria-label='Next'>
+                        <span aria-hidden='true'>&raquo;</span>
+                        <span className='sr-only'>Next</span>
                     </button>
                 </li>
             </ul>

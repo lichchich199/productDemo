@@ -10,8 +10,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { AppDispatch, RootState } from '../../store';
 import {
+    deleteProductAsync,
     getProductAsync,
     setCustomSortParam,
+    setError,
     setFormValue,
     SortParamKey,
 } from './slices';
@@ -28,7 +30,7 @@ export default function ActionsList({
 }: ActionsListProps) {
     const navigate = useNavigate();
     const dispatch: AppDispatch = useDispatch();
-    var { productListSortParams } = useSelector(
+    var { productListSortParams, selectedProduct } = useSelector(
         (state: RootState) => state.listProduct
     );
     useEffect(() => {
@@ -52,9 +54,19 @@ export default function ActionsList({
         const { name, value } = event.currentTarget;
         dispatch(setCustomSortParam({ name: name as SortParamKey, value }));
     };
+    // dispatch delete product
+    const dispatchDeleteProduct = () => {
+        if (selectedProduct.length > 0) {
+            dispatch(deleteProductAsync(selectedProduct[0]));
+            dispatch(setError({ message: '' }));
+        } else {
+            let errorMsg = 'Please select one product!';
+            dispatch(setError({ message: errorMsg }));
+        }
+    };
     return (
-        <div className="row mb-3">
-            <div className="col-6 d-flex">
+        <div className='row mb-3'>
+            <div className='col-6 d-flex'>
                 <div style={{ flex: '1' }}>
                     <span>Price : </span>
                     <button
@@ -64,9 +76,9 @@ export default function ActionsList({
                                 ? 'btn-primary'
                                 : ''
                         }`}
-                        type="button"
-                        name="price"
-                        value="ASC"
+                        type='button'
+                        name='price'
+                        value='ASC'
                         onClick={(e) => handleSort(e)}
                     >
                         <FontAwesomeIcon icon={faSortUp as any} />
@@ -78,9 +90,9 @@ export default function ActionsList({
                                 ? 'btn-primary'
                                 : ''
                         }`}
-                        type="button"
-                        name="price"
-                        value="DESC"
+                        type='button'
+                        name='price'
+                        value='DESC'
                         onClick={(e) => handleSort(e)}
                     >
                         <FontAwesomeIcon icon={faSortDown as any} />
@@ -95,9 +107,9 @@ export default function ActionsList({
                                 ? 'btn-primary'
                                 : ''
                         }`}
-                        type="button"
-                        name="createdAt"
-                        value="ASC"
+                        type='button'
+                        name='createdAt'
+                        value='ASC'
                         onClick={(e) => handleSort(e)}
                     >
                         <FontAwesomeIcon icon={faSortUp as any} />
@@ -109,28 +121,36 @@ export default function ActionsList({
                                 ? 'btn-primary'
                                 : ''
                         }`}
-                        type="button"
-                        name="createdAt"
-                        value="DESC"
+                        type='button'
+                        name='createdAt'
+                        value='DESC'
                         onClick={(e) => handleSort(e)}
                     >
                         <FontAwesomeIcon icon={faSortDown as any} />
                     </button>
                 </div>
             </div>
-            <div className="col-5 d-flex justify-content-between">
+            <div className='col-5 d-flex justify-content-between'>
                 <input
-                    id="q"
-                    aria-label="Search Product"
-                    placeholder="Search By Name"
-                    type="search"
-                    name="name"
+                    id='q'
+                    aria-label='Search Product'
+                    placeholder='Search By Name'
+                    type='search'
+                    name='name'
                     defaultValue={''}
                     onChange={dispatchSetFormValue}
                     onKeyDown={handleKeyDown}
                 />
                 <button
-                    type="button"
+                    type='button'
+                    onClick={() => {
+                        dispatchDeleteProduct();
+                    }}
+                >
+                    Delete
+                </button>
+                <button
+                    type='button'
                     onClick={() => {
                         navigate(`/product/add`);
                     }}
@@ -138,8 +158,8 @@ export default function ActionsList({
                     New
                 </button>
             </div>
-            <div className="col-1">
-                <div className="d-flex" style={{ marginLeft: 'auto' }}>
+            <div className='col-1'>
+                <div className='d-flex' style={{ marginLeft: 'auto' }}>
                     <div
                         style={{ margin: '0 10px', cursor: 'pointer' }}
                         onClick={() => {

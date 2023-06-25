@@ -1,4 +1,4 @@
-import { getListProduct } from '../listProduct/api';
+import { deleteProduct, getListProduct } from '../listProduct/api';
 import {
     createSlice,
     createAsyncThunk,
@@ -6,12 +6,21 @@ import {
     PayloadAction,
 } from '../toolkit';
 
-// login async function
+// get product async function
 export const getProductAsync = createAsyncThunk(
     'listProduct/listProduct',
     async (_, thunkAPI: any) => {
         const { searchQuery } = thunkAPI.getState().listProduct;
         const response = await getListProduct(searchQuery);
+        return response.data;
+    }
+);
+
+// delete product async function
+export const deleteProductAsync = createAsyncThunk(
+    'listProduct/deleteProduct',
+    async (id : string) => {
+        const response = await deleteProduct(id);
         return response.data;
     }
 );
@@ -34,6 +43,9 @@ const initialState = {
             status: false,
         },
     ],
+    error: '',
+    selectedProduct: [] as string[],
+    statusDelete: false,
     limit: 5,
     status: false,
 };
@@ -87,6 +99,16 @@ export const listProductSlice = createSlice({
             }
             state.productListSortParams = newSortParams;
         },
+        setSelectedProduct: (state, action) => {
+            const { id } = action.payload
+            let selectedProductArr = state.selectedProduct
+            let dataArr = (selectedProductArr.length > 0 && selectedProductArr[0] === id) ? [] : [id];
+            state.selectedProduct = dataArr;
+        },
+        setError: (state, action) => {
+            const { message } = action.payload
+            state.error = message;
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -101,11 +123,19 @@ export const listProductSlice = createSlice({
             })
             .addCase(getProductAsync.rejected, (state) => {
                 state.status = false;
-            });
+            })
+            .addCase(deleteProductAsync.pending, (state) => {
+            })
+            .addCase(deleteProductAsync.fulfilled, (state) => {
+                state.statusDelete = !state.statusDelete;
+            })
+            .addCase(deleteProductAsync.rejected, (state) => {
+            })
+            ;
     },
 });
 
 // export actions
-export const { setFormValue, setCustomSortParam } = listProductSlice.actions;
+export const { setFormValue, setCustomSortParam, setSelectedProduct, setError } = listProductSlice.actions;
 
 export default listProductSlice.reducer;

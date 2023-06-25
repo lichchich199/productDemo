@@ -5,9 +5,7 @@ import { register } from "./api"
 export const registerAsync = createAsyncThunk(
     "register/register",
     async (_, thunkAPI : any) => {
-        console.log('aaaa')
       const data = thunkAPI.getState().register
-      console.log('data register', data)
       const response = await register(data)
       return response.data
     }

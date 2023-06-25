@@ -14,3 +14,7 @@ export const getListProduct = async (params : paramType) => {
     query = query === '?' ? '' : query.substring(0, query.length - 1);
     return await axios.get(`http://localhost:5000/api/products${query}`)
 }
+
+export const deleteProduct = async (id : string) => {
+    return await axios.delete(`http://localhost:5000/api/product/${id}`)
+}

@@ -14,9 +14,7 @@ import { LITMIT_PRODUCT } from '../utils/constant';
 export default function ListProduct() {
     const navigate = useNavigate();
     const loginState = useSelector((state: RootState) => state.login);
-    const { products } = useSelector(
-        (state: RootState) => state.listProduct
-    );
+    const { products } = useSelector((state: RootState) => state.listProduct);
     const [listStatus, setListStatus] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     let totalPage = 2;
@@ -35,11 +33,11 @@ export default function ListProduct() {
     return (
         <Layout>
             <div
-                className="row"
+                className='row'
                 style={{ marginTop: '4%', marginRight: '0', minHeight: '74vh' }}
             >
                 <CategoryList />
-                <div className="col-lg-10">
+                <div className='col-lg-10'>
                     <ListActions
                         handleChangStatusList={handleChangStatusList}
                     />
@@ -49,23 +47,24 @@ export default function ListProduct() {
                             limit={LITMIT_PRODUCT}
                         />
                     ) : (
-                        <ProductInfomationGrid 
+                        <ProductInfomationGrid
                             currentPage={currentPage}
                             limit={LITMIT_PRODUCT}
                         />
                     )}
                 </div>
             </div>
-            {
-                products.length > 0 ? (<Paging
-                currentPage={currentPage}
-                totalPage={totalPage}
-                setCurrentPage={(page) => {
-                    setCurrentPage(page);
-                }}
-            /> ) : <></>
-            }
-            
+            {products.length > 0 ? (
+                <Paging
+                    currentPage={currentPage}
+                    totalPage={totalPage}
+                    setCurrentPage={(page) => {
+                        setCurrentPage(page);
+                    }}
+                />
+            ) : (
+                <></>
+            )}
         </Layout>
     );
 }
