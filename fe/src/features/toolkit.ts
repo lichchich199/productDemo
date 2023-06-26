@@ -9,11 +9,11 @@ import {
 } from '@reduxjs/toolkit';
 import { toggleLoadingStatus } from './global/slices';
 
-type Props = {
-    name: string;
-    callback: (payload: void, thunkAPI: Object) => {};
-    errorCallback?: (error: any, thunkAPI: Object, payload: void) => {};
-};
+// type Props = {
+//     name: string;
+//     callback: (payload: void, thunkAPI: Object) => {};
+//     errorCallback?: (error: any, thunkAPI: Object, payload: void) => {};
+// };
 
 type ThunkAPI = {
     dispatch: any;

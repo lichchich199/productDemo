@@ -17,7 +17,7 @@ export default function ListProduct() {
     const { products } = useSelector((state: RootState) => state.listProduct);
     const [listStatus, setListStatus] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-    let totalPage = 2;
+    let totalPage = Math.ceil(products.length/5);
     // check login status
     useEffect(() => {
         const emailLocalStorage = localStorage.getItem('email') || '';
@@ -30,6 +30,12 @@ export default function ListProduct() {
     const handleChangStatusList = (value: boolean) => {
         setListStatus(value);
     };
+
+    useEffect(() => {
+        let curPage = currentPage > 1 ? currentPage - 1 : 1;
+        setCurrentPage(curPage)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [totalPage])
     return (
         <Layout>
             <div
@@ -54,7 +60,7 @@ export default function ListProduct() {
                     )}
                 </div>
             </div>
-            {products.length > 0 ? (
+            {totalPage > 1 ? (
                 <Paging
                     currentPage={currentPage}
                     totalPage={totalPage}
