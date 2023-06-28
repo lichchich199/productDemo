@@ -64,6 +64,17 @@ export default function ActionsList({
             dispatch(setError({ message: errorMsg }));
         }
     };
+
+    // handle edit product
+    const handleEditProduct = () => {
+        if (selectedProduct.length > 0) {
+            dispatch(setError({ message: '' }));
+            navigate(`/product/edit/${selectedProduct[0]}`);
+        } else {
+            let errorMsg = 'Please select one product!';
+            dispatch(setError({ message: errorMsg }));
+        }
+    };
     return (
         <div className='row mb-3'>
             <div className='col-6 d-flex'>
@@ -156,6 +167,14 @@ export default function ActionsList({
                     }}
                 >
                     New
+                </button>
+                <button
+                    type='button'
+                    onClick={() => {
+                        handleEditProduct();
+                    }}
+                >
+                    Edit
                 </button>
             </div>
             <div className='col-1'>

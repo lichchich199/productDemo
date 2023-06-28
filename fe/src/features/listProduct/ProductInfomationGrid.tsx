@@ -50,7 +50,6 @@ export default function ProductInfomation({
     const dispatchSelectedProduct = (id: string) => {
         dispatch(setSelectedProduct({ id: id }));
     };
-    console.log('selected:', selectedProduct);
     return (
         <div className='row'>
             {error && <p>{error}</p>}
